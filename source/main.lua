@@ -58,7 +58,7 @@ function Player:update()
 
 	local fire = playdate.buttonJustPressed(playdate.kButtonB)
 	if fire then
-		shootBullets(self.pos.x, self.pos.y, 200, 80)
+		shootBullets(self.pos.x, self.pos.y, 200, 1)
 	end
 end
 
@@ -80,6 +80,7 @@ end
 local player = Player.new(screenCenterOffset, 16)
 local bulletManager = BulletManager.new(2400)
 bulletManager.bulletImage = gfx.image.new("images/shot_8px")
+bulletManager:enableSpacePartition()
 
 function shootBullets(x, y, speed, count)
 	local angleInc = (2 * math.pi) / count
@@ -126,8 +127,16 @@ function playdate.update()
 	local crankDir = vec2.new(math.sin(crankAngle), -math.cos(crankAngle))
 	local collectorPos = player.pos + crankDir * player.collectorOffset
 	local hits = bulletManager:collideCircle(collectorPos.x, collectorPos.y, player.collectorSize)
-	if hits > 0 then
-		print(string.format("Hits: %d", hits))
+	-- if hits > 0 then
+	-- 	print(string.format("Hits: %d", hits))
+	-- end
+
+	-- test space partition is working
+	local bullet = bulletManager.bullets[bulletManager.maxBullets]
+	if bulletManager.spacePartition ~= nil and bullet.lifetime > 0.0 then
+		local x, y = bullet.x, bullet.y
+		local i = bulletManager.spacePartition:getIndex(x, y)
+		print(string.format("(%.2f, %.2f) --> [%d]  (lifetime = %.2f)", x, y, i, bullet.lifetime))
 	end
 
 	-- draw
