@@ -1,0 +1,8 @@
+name=Bullet Sponge
+author=Andrew Palmer
+description=Shoot things.
+bundleID=com.andrewpalmer.bulletsponge
+version=1.0
+buildNumber=123
+imagePath=images/launcher
+launchSoundPath=sounds/launcher
